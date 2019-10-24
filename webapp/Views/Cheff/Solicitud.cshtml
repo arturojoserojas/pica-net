@@ -1,0 +1,35 @@
+﻿@model CheffModel
+
+@{
+    ViewBag.title = "Formulario para Cheff";
+}
+
+<h1>Formulario para Cheff</h1>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nombres"></label>
+                <input asp-for="Nombres" class="form-control"/>
+                <span asp-validation-for="Nombres" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Apellido"></label>
+                <input asp-for="Apellido" class="form-control"/>
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="TipoCocina"></label>
+                <input asp-for="TipoCocina" class="form-control"/>
+                <span asp-validation-for="TipoCocina" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Ingresar</button>
+        </form>
+    </div>
+</div>
