@@ -15,20 +15,20 @@ namespace webapp.Models
 
     [StringLength(20, MinimumLength = 3)]
     [Required(ErrorMessage="Al menos un nombre debe ingresar")]
-    [EmailAddress]
     [Display]
     public string Nombres { get; set; }
 
     [StringLength(20, MinimumLength = 3)]
     [Required(ErrorMessage="Al menos un apellido debe ingresar")]
-    [EmailAddress]
     [Display]
     public string Apellido { get; set; }
 
+    [Required(ErrorMessage="Ingrese su fecha de nacimiento")]
+    [DataType(DataType.Date)]
+    public DateTime FechaNacimiento { get; set; }
 
     [StringLength(20, MinimumLength = 3)]
     [Required(ErrorMessage="Ingrese el tipo de cocina que más le gusta")]
-    [EmailAddress]
     [Display]
     public string TipoCocina { get; set; }
 

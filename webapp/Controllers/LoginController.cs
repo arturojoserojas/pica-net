@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,22 +14,15 @@ using webapp.Models;
 namespace webapp.Controllers
 {
     public class LoginController : Controller
-    {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+    {        
+        //private readonly SignInManager<IdentityUser> signInManager;
+        private readonly ILoginService loginService;
 
-        public LoginController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager){
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-      
+        public LoginController(ILoginService loginService){
+            this.loginService = loginService;
+            //this.signInManager = signInManager;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpGet]
         public IActionResult Login()
@@ -35,20 +31,31 @@ namespace webapp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(Models.LoginModel loginModel){
-            if(ModelState.IsValid){
-                var result = await signInManager.PasswordSignInAsync(
-                    loginModel.Email, loginModel.Password, false, false);
-                if(result.Succeeded){
-                    return RedirectToAction("index","home");
+        public async Task<IActionResult> LoginAsync(Models.LoginModel loginModel)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (loginService.autenticacion(loginModel))
+                {
+                    var claims = new List<Claim>
+                {
+                    new Claim("user", "user"),
+                    new Claim("role", "Member")
+                };
+
+                await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
+
+                    return RedirectToAction("autenticado", "login");
                 }
                 ModelState.AddModelError(string.Empty, "Acceso negado");
 
             }
             return View(loginModel);
-        }
+        }        
 
-        public IActionResult Privacy()
+        [Authorize]
+        public IActionResult Autenticado()
         {
             return View();
         }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,14 +33,23 @@ namespace webapp.Controllers
             return View();
         }
 
-         [HttpPost]
-        public async Task<IActionResult> Solicitud(Models.CheffModel model){
+        [HttpPost]
+        public IActionResult Solicitud(Models.CheffModel model){
             if(ModelState.IsValid){
                
-
             }
             return View(model);
         }
+
+         [HttpPost]
+        public  HttpResponseMessage Solicitudes(Models.CheffModel model){
+            if(ModelState.IsValid){
+               return new HttpResponseMessage(HttpStatusCode.Created);
+            }
+            return new HttpResponseMessage(HttpStatusCode.BadRequest);
+        }
+
+
 
         public IActionResult Privacy()
         {

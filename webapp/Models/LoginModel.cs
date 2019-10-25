@@ -10,9 +10,10 @@ namespace webapp.Models
     [StringLength(60, MinimumLength = 3)]
     [Required]
     [EmailAddress]
+    [Display(Name = "Correo Electronico")]
     public string Email { get; set; }
 
-    [Display(Name = "Release Date")]
+    [Display(Name = "Contraseña")]
     [DataType(DataType.Password)]
     [Required]
     public string Password { get; set; }
