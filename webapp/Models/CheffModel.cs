@@ -14,14 +14,14 @@ namespace webapp.Models
     public string Email { get; set; }
 
     [StringLength(20, MinimumLength = 3)]
-    [Required(ErrorMessage="Al menos un nombre debe ingresar")]
+    [Required(ErrorMessage="Al menos un nombres debe ingresar")]
     [Display]
     public string Nombres { get; set; }
 
     [StringLength(20, MinimumLength = 3)]
-    [Required(ErrorMessage="Al menos un apellido debe ingresar")]
+    [Required(ErrorMessage="Al menos un apellidos debe ingresar")]
     [Display]
-    public string Apellido { get; set; }
+    public string Apellidos { get; set; }
 
     [Required(ErrorMessage="Ingrese su fecha de nacimiento")]
     [DataType(DataType.Date)]
