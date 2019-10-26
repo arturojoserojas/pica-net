@@ -7,7 +7,7 @@ namespace webapp.Models
 {
     public int Id { get; set; }
 
-    [StringLength(20, MinimumLength = 3)]
+    [StringLength(40, MinimumLength = 3)]
     [Required(ErrorMessage="Correo electronico invalido")]
     [EmailAddress]
     [Display]

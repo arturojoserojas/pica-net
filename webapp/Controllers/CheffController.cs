@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using webapp.Models;
 
 namespace webapp.Controllers
 {
@@ -16,15 +8,14 @@ namespace webapp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public CheffController(
-            ILogger<HomeController> logger){
-            _logger = logger;
-      
-        }
+        private readonly ICheffService service;
 
-        public IActionResult Index()
-        {
-            return View();
+        public CheffController(
+            ILogger<HomeController> logger,
+            ICheffService service){
+            _logger = logger;
+            this.service = service;
+      
         }
 
         [HttpGet]
@@ -35,23 +26,24 @@ namespace webapp.Controllers
 
         [HttpPost]
         public IActionResult Solicitud(Models.CheffModel model){
-            if(ModelState.IsValid){
-               
+            try{
+                _logger.LogInformation("ingreso a metodo de solicitud");
+                if(ModelState.IsValid){
+                
+                    if(service.registrar(model)){
+                        return RedirectToAction("Agradecimiento", "Cheff");
+                    }
+                }
+                ModelState.AddModelError(string.Empty, "Acceso negado");
+            }catch(Exception ex){
+                _logger.LogError($"Error: {ex}");
+               return RedirectToAction("Error");
             }
+            
             return View(model);
         }
 
-         [HttpPost]
-        public  HttpResponseMessage Solicitudes(Models.CheffModel model){
-            if(ModelState.IsValid){
-               return new HttpResponseMessage(HttpStatusCode.Created);
-            }
-            return new HttpResponseMessage(HttpStatusCode.BadRequest);
-        }
-
-
-
-        public IActionResult Privacy()
+        public IActionResult Agradecimiento()
         {
             return View();
         }
@@ -59,7 +51,7 @@ namespace webapp.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

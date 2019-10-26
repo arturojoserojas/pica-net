@@ -15,12 +15,13 @@ namespace webapp.Controllers
 {
     public class LoginController : Controller
     {        
-        //private readonly SignInManager<IdentityUser> signInManager;
         private readonly ILoginService loginService;
+        private readonly ILogger<HomeController> _logger;
 
-        public LoginController(ILoginService loginService){
-            this.loginService = loginService;
-            //this.signInManager = signInManager;
+        public LoginController(ILogger<HomeController> logger,
+            ILoginService loginService){
+                _logger = logger;
+                this.loginService = loginService;
         }
 
 
@@ -33,6 +34,12 @@ namespace webapp.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginAsync(Models.LoginModel loginModel)
         {
+            try{
+
+            }catch(Exception ex){
+                _logger.LogError($"Error: {ex}");
+               return RedirectToAction("Error");
+            }
             if (ModelState.IsValid)
             {
 
@@ -63,7 +70,7 @@ namespace webapp.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }
